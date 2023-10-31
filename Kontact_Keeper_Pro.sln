@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kontact_Keeper_Pro", "Kontact_Keeper_Pro.csproj", "{6B89E3A5-69F8-424A-923D-57A7A8EDAF29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B89E3A5-69F8-424A-923D-57A7A8EDAF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B89E3A5-69F8-424A-923D-57A7A8EDAF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B89E3A5-69F8-424A-923D-57A7A8EDAF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B89E3A5-69F8-424A-923D-57A7A8EDAF29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E30CB48-B47C-4010-85C9-40D3D6129145}
+	EndGlobalSection
+EndGlobal
