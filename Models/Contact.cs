@@ -6,6 +6,7 @@ namespace Kontact_Keeper_Pro.Models
 {
     public class Contact
     {
+        // Private Fields
         private DateTime _created;
         private DateTime? _updated;
         private DateTime? _dateOfBirth;
@@ -15,6 +16,7 @@ namespace Kontact_Keeper_Pro.Models
 
 
         // Foreign Key
+        [Required]
         public string? AppUserId { get; set; }
 
         [Required]
@@ -108,5 +110,13 @@ namespace Kontact_Keeper_Pro.Models
         public IFormFile? ImageFile { get; set; }
         public byte[]? ImageData { get; set; }
         public string? ImageType { get; set; }
+
+
+        // Navigation Properties
+
+        public virtual AppUser? AppUser { get; set; }
+
+        // Relation to Category
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
     }
 }

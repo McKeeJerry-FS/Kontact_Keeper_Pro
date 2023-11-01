@@ -34,5 +34,10 @@ namespace Kontact_Keeper_Pro.Models
                 return $"{LastName}, {FirstName}";
             }
         }
+
+        // Navigation Properties
+
+        public virtual ICollection<Contact> Contacts { get; set; } = new HashSet<Contact>();
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
     }
 }
