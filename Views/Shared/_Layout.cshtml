@@ -3,27 +3,50 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Kontact_Keeper_Pro</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - Kontact Keeper Pro</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="~/img/jm-branding/favicon.ico" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+    <!-- Devicons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+    <!--fonts-->
+    @* <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800&family=Roboto:ital,wght@0,100;0,400;0,900;1,100;1,300;1,500;1,900&display=swap" rel="stylesheet"> *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Kontact_Keeper_Pro.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark text-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kontact_Keeper_Pro</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                @if (!User.Identity!.IsAuthenticated)
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kontact Keeper Pro</a>
+                }
+                else
+                {
+                    <a class="navbar-brand nav-link dropdown-toggle" data-bs-toggle="dropdown">Kontact Keeper Pro</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                    </div>
+                }
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="" asp-action=""><i class="bi bi-house-door-fill"></i></a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -31,19 +54,48 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+
+    <div class="content" id="">
+        <main role="main" class="container w-100">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top bg-dark footer text-muted">
-        <div class="container">
-            &copy; 2023 - Kontact_Keeper_Pro - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer container-fluid">
+        <div class="row align-items-center py-2">
+            <div class="col">
+                <div class="row align-items-center gy-2">
+                    <div class="col d-flex justify-content-center justify-content-md-start order-last order-md-first text-light copyright">
+                        &copy; @DateTime.Now.Year Jerry McKee Jr All Rights Reserved
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <img src="\img\name_logo-removebg-preview.png" height="50">
+                    </div>
+                    <div class="d-none d-lg-block col-lg-3 text-lg-end">
+                        <a href="https://www.linkedin.com/in/jjerry-mckee-jr/" target="_blank"
+                           class="text-decoration-none socialicons">
+                            <i class="bi bi-linkedin p-2"></i>
+                        </a>
+                        <a href="https://github.com/McKeeJerry-FS" target="_blank" class="text-decoration-none socialicons">
+                            <i class="bi bi-github p-2"></i>
+                        </a>
+                        <a href="https://www.instagram.com/jay_codes_20/" target="_blank" class="text-decoration-none socialicons">
+                            <i class="bi bi-instagram p-2"></i>
+                        </a>
+                        <a href="mailto:jerry.mckee.jr0882@gmail.com" target="_blank" class="text-decoration-none socialicons">
+                            <i class="bi bi-envelope-at p-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -73,6 +73,7 @@ namespace Kontact_Keeper_Pro.Models
 
         }
 
+        [Display(Name = "Date of Birth")]
         public DateTime? DateOfBirth
         {
             get => _dateOfBirth;
@@ -100,7 +101,7 @@ namespace Kontact_Keeper_Pro.Models
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
-        [Display(Name = "Phone NUmber")]
+        [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
 

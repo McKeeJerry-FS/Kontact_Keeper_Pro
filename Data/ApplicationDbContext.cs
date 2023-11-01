@@ -12,6 +12,9 @@ namespace Kontact_Keeper_Pro.Data
 
         }
 
+        // DbSets
+        public virtual DbSet<Contact> Contacts { get; set; } = default!;
+        public virtual DbSet<Category> Categories { get; set; } = default!;
 
 
     }
