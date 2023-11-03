@@ -28,8 +28,12 @@ namespace Kontact_Keeper_Pro.Controllers
         // GET: Contacts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Contacts.Include(c => c.AppUser);
-            return View(await applicationDbContext.ToListAsync());
+            string? userId = _userManager.GetUserId(User);
+
+            IEnumerable<Contact> contacts = await _context.Contacts.Include(c => c.Categories).Where(c => c.AppUserId == userId)
+                                                                   .ToListAsync();
+
+            return View(contacts);
         }
 
         // GET: Contacts/Details/5
@@ -54,7 +58,9 @@ namespace Kontact_Keeper_Pro.Controllers
         // GET: Contacts/Create
         public IActionResult Create()
         {
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
+            string? userId = _userManager.GetUserId(User);
+
+            ViewData["CategoryList"] = new MultiSelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View();
         }
 
@@ -63,7 +69,7 @@ namespace Kontact_Keeper_Pro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageFile")] Contact contact)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageFile")] Contact contact, IEnumerable<int> selected)
         {
             ModelState.Remove("AppUserId");
 
@@ -73,14 +79,27 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 contact.AppUserId = _userManager.GetUserId(User);
                 contact.Created = DateTime.Now;
-
-
-
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
+                
+                foreach(int categoryId in selected)
+                {
+                    Category? category = await _context.Categories.FindAsync(categoryId);
+                    if(contact != null && category != null)
+                    {
+                        contact.Categories.Add(category);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", contact.AppUserId);
+
+
+            string? userId = _userManager.GetUserId(User);
+
+            ViewData["CategoryList"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View(contact);
         }
 
@@ -92,12 +111,17 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
-            var contact = await _context.Contacts.FindAsync(id);
+            Contact? contact = await _context.Contacts.Include(c=>c.Categories).FirstOrDefaultAsync(c => c.Id == id);
             if (contact == null)
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", contact.AppUserId);
+
+            IEnumerable<int> currentCategories = contact.Categories.Select(c => c.Id);
+
+            string? userId = _userManager.GetUserId(User);
+
+            ViewData["CategoryList"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", currentCategories);
             return View(contact);
         }
 
@@ -133,7 +157,9 @@ namespace Kontact_Keeper_Pro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", contact.AppUserId);
+            string? userId = _userManager.GetUserId(User);
+
+            ViewData["CategoryList"] = new MultiSelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View(contact);
         }
 
