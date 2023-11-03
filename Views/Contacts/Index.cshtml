@@ -1,131 +1,175 @@
-﻿@model IEnumerable<Kontact_Keeper_Pro.Models.Contact>
-
+﻿@using Kontact_Keeper_Pro.Services.Interfaces;
+@model IEnumerable<Kontact_Keeper_Pro.Models.Contact>
+@inject IImageService _ImageService
 @{
     ViewData["Title"] = "Contacts";
 }
-<div class="card">
-    <div class="card-header">
 
-        <h1>Contacts</h1>
 
+
+<h1>Contacts</h1>
+
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+@foreach (var item in Model)
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="row g-5 p-3">
+                <div class="col-12 col-lg-4">
+                    <div class="square-img-container">
+                        <img class="img-fluid" src="@_ImageService.ConvertByteArrayToFile(item.ImageData, item.ImageType)" >
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.FirstName)</p>
+                            <p class="fs-4">@Html.DisplayFor(modelItem => item.FirstName)</p>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <p class="fs-3 fw-bold">
+                                @Html.DisplayNameFor(model => model.LastName)
+                            </p>
+                            <p class="fs-4">@Html.DisplayFor(modelItem => item.LastName)</p>
+                        </div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                        <div class="col-12 "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
+}
 
 
-        <table class="table table-bordered table-striped table-sm border-secondary border-2 w-100">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LastName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Created)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Updated)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateOfBirth)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address1)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address2)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.City)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.State)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ZipCode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PhoneNumber)
-                    </th>
-                    <th hidden class="hidden">
-                        @Html.DisplayNameFor(model => model.ImageData)
-                    </th>
-                    <th>
-                        Categories
-                    </th>
 
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider                                        ">
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Created)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Updated)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfBirth)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address2)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.City)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.State)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ZipCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-                        <td hidden>
-                            @Html.DisplayFor(modelItem => item.ImageData)
-                        </td>
-                        <td>
-                            <ul>
+<table class="table table-bordered table-striped table-sm border-secondary border-2 w-100">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th hidden class="hidden">
+                @Html.DisplayNameFor(model => model.ImageData)
+            </th>
+            <th>
+                Categories
+            </th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider                                        ">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@_ImageService.ConvertByteArrayToFile(item.ImageData, item.ImageType)" style="height:80px; width:80px">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.ImageData)
+                </td>
+                <td>
+                    <ul>
 
-                                @foreach (Category category in item.Categories)
-                                {
-                                    <li>@category.Name</li>
-                                }
-                            </ul>
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                        @foreach (Category category in item.Categories)
+                        {
+                            <li>@category.Name</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 

@@ -9,6 +9,7 @@ using Kontact_Keeper_Pro.Data;
 using Kontact_Keeper_Pro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Kontact_Keeper_Pro.Services.Interfaces;
 
 namespace Kontact_Keeper_Pro.Controllers
 {
@@ -19,12 +20,15 @@ namespace Kontact_Keeper_Pro.Controllers
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IImageService _imageService;
 
         public ContactsController(ApplicationDbContext context, 
-                                  UserManager<AppUser> userManager)
+                                  UserManager<AppUser> userManager,
+                                  IImageService imageService)
         {
             _context = context;
             _userManager = userManager;
+            _imageService = imageService;
         }
         #endregion
 
@@ -86,6 +90,14 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 contact.AppUserId = _userManager.GetUserId(User);
                 contact.Created = DateTime.Now;
+
+                if (contact.ImageFile != null)
+                {
+                    // use image service
+                    contact.ImageData = await _imageService.ConvertFileToByteArrayAsynC(contact.ImageFile);
+                    contact.ImageType = contact.ImageFile.ContentType;
+                }
+
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
 

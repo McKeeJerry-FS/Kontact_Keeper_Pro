@@ -1,5 +1,7 @@
 using Kontact_Keeper_Pro.Data;
 using Kontact_Keeper_Pro.Models;
+using Kontact_Keeper_Pro.Services;
+using Kontact_Keeper_Pro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,16 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Adding our Custom Services
+builder.Services.AddScoped<IImageService, ImageService>();
+
+
+
+
+
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
