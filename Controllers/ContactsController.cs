@@ -15,6 +15,8 @@ namespace Kontact_Keeper_Pro.Controllers
     [Authorize]
     public class ContactsController : Controller
     {
+        #region Properties
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
@@ -24,6 +26,9 @@ namespace Kontact_Keeper_Pro.Controllers
             _context = context;
             _userManager = userManager;
         }
+        #endregion
+
+        #region Contacts:GET
 
         // GET: Contacts
         public async Task<IActionResult> Index()
@@ -54,7 +59,9 @@ namespace Kontact_Keeper_Pro.Controllers
 
             return View(contact);
         }
+        #endregion
 
+        #region Contacts/Create
         // GET: Contacts/Create
         public IActionResult Create()
         {
@@ -81,11 +88,11 @@ namespace Kontact_Keeper_Pro.Controllers
                 contact.Created = DateTime.Now;
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
-                
-                foreach(int categoryId in selected)
+
+                foreach (int categoryId in selected)
                 {
                     Category? category = await _context.Categories.FindAsync(categoryId);
-                    if(contact != null && category != null)
+                    if (contact != null && category != null)
                     {
                         contact.Categories.Add(category);
                     }
@@ -103,6 +110,9 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(contact);
         }
 
+        #endregion
+
+        #region Contacts/Edit
         // GET: Contacts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -111,7 +121,7 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
-            Contact? contact = await _context.Contacts.Include(c=>c.Categories).FirstOrDefaultAsync(c => c.Id == id);
+            Contact? contact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == id);
             if (contact == null)
             {
                 return NotFound();
@@ -121,7 +131,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
             string? userId = _userManager.GetUserId(User);
 
-            ViewData["CategoryList"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", currentCategories);
+            ViewData["CategoryList"] = new MultiSelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", currentCategories);
             return View(contact);
         }
 
@@ -130,7 +140,7 @@ namespace Kontact_Keeper_Pro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,FirstName,LastName,Created,Updated,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageData,ImageType")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,FirstName,LastName,Created,Updated,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageData,ImageType")] Contact contact, IEnumerable<int> selected)
         {
             if (id != contact.Id)
             {
@@ -141,8 +151,32 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 try
                 {
+                    contact.Updated = DateTime.Now;
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
+
+
+                    // Removing current categories
+                    Contact? updatedContact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == contact.Id);
+
+                    updatedContact?.Categories.Clear();
+                    _context.Update(updatedContact);
+                    await _context.SaveChangesAsync();
+
+
+
+                    // adding selected categories
+                    foreach (int categoryId in selected)
+                    {
+                        Category? category = await _context.Categories.FindAsync(categoryId);
+                        if (contact != null && category != null)
+                        {
+                            contact.Categories.Add(category);
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -163,6 +197,9 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(contact);
         }
 
+        #endregion
+
+        #region Contacts/Delete
         // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -205,5 +242,7 @@ namespace Kontact_Keeper_Pro.Controllers
         {
             return (_context.Contacts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        #endregion    
     }
 }

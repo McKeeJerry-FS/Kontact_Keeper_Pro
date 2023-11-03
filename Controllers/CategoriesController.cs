@@ -9,6 +9,7 @@ using Kontact_Keeper_Pro.Data;
 using Kontact_Keeper_Pro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Kontact_Keeper_Pro.Controllers
 {
@@ -116,6 +117,7 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 try
                 {
+                    
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
@@ -132,7 +134,10 @@ namespace Kontact_Keeper_Pro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", category.AppUserId);
+            string? userId = _userManager.GetUserId(User);
+
+
+            ViewData["AppUserId"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", category.AppUserId);
             return View(category);
         }
 

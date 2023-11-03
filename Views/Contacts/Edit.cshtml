@@ -12,7 +12,7 @@
 <h1>EDIT CONTACT</h1>
 <hr />
 <div class="p-3 border border-3 shadow-lg bg-secondary rounded-4">
-    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <form asp-action="Edit" asp-controller="Contacts" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="AppUserId" />
