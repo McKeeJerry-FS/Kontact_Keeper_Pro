@@ -17,6 +17,11 @@ html, body {
 
 body { /* fallback for old browsers */
     background-color: var(--cf-primaryColorLight);
+    background-image: url("/img/pawel-czerwinski-APVgVX_yDDc-unsplash.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: auto;
     display: flex;
     flex-direction: column;
     color: var(--cf-dark-color);
