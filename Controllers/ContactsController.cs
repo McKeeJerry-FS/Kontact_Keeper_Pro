@@ -152,7 +152,7 @@ namespace Kontact_Keeper_Pro.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,FirstName,LastName,Created,Updated,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageData,ImageType")] Contact contact, IEnumerable<int> selected)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppUserId,FirstName,LastName,Created,Updated,DateOfBirth,Address1,Address2,City,State,ZipCode,Email,PhoneNumber,ImageFile,ImageData,ImageType")] Contact contact, IEnumerable<int> selected)
         {
             if (id != contact.Id)
             {
@@ -164,12 +164,21 @@ namespace Kontact_Keeper_Pro.Controllers
                 try
                 {
                     contact.Updated = DateTime.Now;
+
+                    if (contact.ImageFile != null)
+                    {
+                        contact.ImageData = await _imageService.ConvertFileToByteArrayAsynC(contact.ImageFile);
+                        contact.ImageType = contact.ImageFile.ContentType;
+                    }
+
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
 
 
                     // Removing current categories
-                    Contact? updatedContact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == contact.Id);
+                    Contact? updatedContact = await _context.Contacts
+                                                            .Include(c => c.Categories)
+                                                            .FirstOrDefaultAsync(c => c.Id == contact.Id);
 
                     updatedContact?.Categories.Clear();
                     _context.Update(updatedContact);
