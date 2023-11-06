@@ -3,6 +3,7 @@ using Kontact_Keeper_Pro.Models;
 using Kontact_Keeper_Pro.Services;
 using Kontact_Keeper_Pro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,10 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 // Adding our Custom Services
 builder.Services.AddScoped<IImageService, ImageService>();
 
+// Email Service Here
+builder.Services.AddScoped<IEmailSender, EmailService>();
+// Email Configurations
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 
 

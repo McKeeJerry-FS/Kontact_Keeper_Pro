@@ -6,6 +6,7 @@ namespace Kontact_Keeper_Pro.Services
     {
         private readonly string _defaultImage = "/img/silo_img.jpg";
 
+        #region ConvertByteArrayToFile
         public string? ConvertByteArrayToFile(byte[]? fileData, string? extension)
         {
             try
@@ -26,6 +27,9 @@ namespace Kontact_Keeper_Pro.Services
             }
         }
 
+        #endregion
+
+        #region ConvertFileToByteArrayAsynC
         public async Task<byte[]> ConvertFileToByteArrayAsynC(IFormFile? file)
         {
             try
@@ -47,5 +51,7 @@ namespace Kontact_Keeper_Pro.Services
                 throw;
             }
         }
+
+        #endregion    
     }
 }
