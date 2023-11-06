@@ -16,16 +16,21 @@ namespace Kontact_Keeper_Pro.Controllers
     [Authorize]
     public class CategoriesController : Controller
     {
+        #region Properties
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
-        public CategoriesController(ApplicationDbContext context, 
+        public CategoriesController(ApplicationDbContext context,
                                     UserManager<AppUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
+        #endregion
+
+
+        #region GET: Categories
         // GET: Categories
         public async Task<IActionResult> Index()
         {
@@ -36,6 +41,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(categories);
         }
 
+        #endregion
+
+
+        #region GET: Categories/Details
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -55,6 +64,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(category);
         }
 
+        #endregion
+
+
+        #region GET: Categories/Create
         // GET: Categories/Create
         public IActionResult Create()
         {
@@ -62,6 +75,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View();
         }
 
+        #endregion
+
+
+        #region POST: Categories/Create
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -84,6 +101,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(category);
         }
 
+        #endregion
+
+
+        #region GET: Categories/Edit
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -101,6 +122,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(category);
         }
 
+        #endregion
+
+
+        #region POST: Categories/Edit
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -117,7 +142,7 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 try
                 {
-                    
+
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
@@ -141,6 +166,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(category);
         }
 
+        #endregion
+
+
+        #region GET: Categories/Delete
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -160,6 +189,10 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(category);
         }
 
+        #endregion
+
+
+        #region POST: Categories/Delete
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -174,14 +207,20 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 _context.Categories.Remove(category);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+
+        #region CategoriesExists
         private bool CategoryExists(int id)
         {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        #endregion    
     }
-}
+ }
