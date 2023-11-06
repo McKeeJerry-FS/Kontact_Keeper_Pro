@@ -20,7 +20,7 @@
 @foreach (var item in Model)
 {
     <div class="card">
-        <div class="card-body">
+        <div class="card-body w-25">
             <div class="row g-5 p-3">
                 <div class="col-12 col-lg-4">
                     <div class="square-img-container">
@@ -30,43 +30,44 @@
                 <div class="col-12 col-lg-8">
                     <div class="row">
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.FirstName)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.FirstName)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.FirstName)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.FirstName)</p>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.LastName)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.LastName)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.LastName)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.LastName)</p>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.Email)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.Email)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.Email)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.Email)</p>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.PhoneNumber)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.PhoneNumber)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.PhoneNumber)</p>
                         </div>
                         <div class="col-12 ">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.Address1)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.Address1)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.Address1)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.Address1)</p>
                         </div>
                         <div class="col-12 ">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.Address2)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.Address2)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.Address2)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.Address2)</p>
                         </div>
                         <div class="col-12 col-lg-4">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.City)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.City)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.City)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.City)</p>
                         </div>
                         <div class="col-12 col-lg-4">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.State)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.State)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.State)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.State)</p>
                         </div>
                         <div class="col-12 col-lg-4">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.ZipCode)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.ZipCode)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.ZipCode)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.ZipCode)</p>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.Categories)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.Categories)</p>
+                            <p class="fs-6 fw-bold">@Html.DisplayNameFor(model => model.Categories)</p>
                             <ul>
 
                                 @foreach (Category category in item.Categories)
@@ -76,8 +77,8 @@
                             </ul>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <p class="fs-3 fw-bold">@Html.DisplayNameFor(model => model.DateOfBirth)</p>
-                            <p class="fs-4">@Html.DisplayFor(modelItem => item.DateOfBirth)</p>
+                            <p class="fs-5 fw-bold">@Html.DisplayNameFor(model => model.DateOfBirth)</p>
+                            <p class="fs-6">@Html.DisplayFor(modelItem => item.DateOfBirth)</p>
                         </div>
                         <div class="col-12 "></div>
                     </div>
