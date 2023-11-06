@@ -89,7 +89,7 @@ namespace Kontact_Keeper_Pro.Controllers
             if (ModelState.IsValid)
             {
                 contact.AppUserId = _userManager.GetUserId(User);
-                contact.Created = DateTime.Now;
+                contact.Created = DateTimeOffset.Now;
 
                 if (contact.ImageFile != null)
                 {
@@ -163,7 +163,7 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 try
                 {
-                    contact.Updated = DateTime.Now;
+                    contact.Updated = DateTimeOffset.Now;
 
                     if (contact.ImageFile != null)
                     {

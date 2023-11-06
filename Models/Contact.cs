@@ -7,9 +7,9 @@ namespace Kontact_Keeper_Pro.Models
     public class Contact
     {
         // Private Fields
-        private DateTime _created;
-        private DateTime? _updated;
-        private DateTime? _dateOfBirth;
+        private DateTimeOffset _created;
+        private DateTimeOffset? _updated;
+        private DateTimeOffset? _dateOfBirth;
 
         // Primary Key - single unique identifier for a record (row) in a table
         public int Id { get; set; }
@@ -48,7 +48,7 @@ namespace Kontact_Keeper_Pro.Models
             }
         }
 
-        public DateTime Created
+        public DateTimeOffset Created
         {
             get
             {
@@ -60,7 +60,7 @@ namespace Kontact_Keeper_Pro.Models
             }
         }
 
-        public DateTime? Updated
+        public DateTimeOffset? Updated
         {
             get => _updated;
             set
@@ -74,7 +74,7 @@ namespace Kontact_Keeper_Pro.Models
         }
 
         [Display(Name = "Date of Birth")]
-        public DateTime? DateOfBirth
+        public DateTimeOffset? DateOfBirth
         {
             get => _dateOfBirth;
             set
