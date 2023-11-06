@@ -52,7 +52,14 @@ namespace Kontact_Keeper_Pro.Services
 					await smtpClient.SendAsync(newEmail);
 
 					await smtpClient.DisconnectAsync(true);
-				}
+
+					// For testing - comment out later
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("****************** SUCCESS *****************");
+                    Console.WriteLine($"Email Successfully sent!!!!!!");
+                    Console.WriteLine("****************** SUCCESS *****************");
+                    Console.ResetColor();
+                }
 				catch (Exception ex)
 				{
 					Console.ForegroundColor = ConsoleColor.Red;
