@@ -54,7 +54,7 @@ namespace Kontact_Keeper_Pro.Controllers
             }
 
             var contact = await _context.Contacts
-                .Include(c => c.AppUser)
+                .Include(c => c.Categories)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contact == null)
             {
