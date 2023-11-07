@@ -27,12 +27,13 @@
             </div>
         </form>
         @* filtering function *@
-        <form asp-action="Index" asp-controller="Categories" method="post">
+        <form asp-action="Index" asp-controller="Contacts" method="post">
             <div class="mt-5">
                 <label class="form-label fw-bold text-secondary">CATEGORY FILTER</label>
-                <select name="categoryId" class="form-control"
+                <select name="categoryId" class="form-control" asp-items="ViewBag.Categories"
                         onchange="this.form.submit()" onfocus="this.selectedIndex=-1;this.blur();">                   
                         <option>All Contacts</option>
+                   
                 </select>
             </div>
         </form>

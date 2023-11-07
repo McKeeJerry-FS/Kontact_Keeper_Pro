@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Kontact_Keeper_Pro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using PagedList;
 
 namespace Kontact_Keeper_Pro.Controllers
 {
@@ -39,14 +40,34 @@ namespace Kontact_Keeper_Pro.Controllers
         #region Contacts:GET
 
         // GET: Contacts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
             string? userId = _userManager.GetUserId(User);
+            List<Contact> contacts = new();
 
-            IEnumerable<Contact> contacts = await _context.Contacts.Include(c => c.Categories)
-                                                                   .Where(c => c.AppUserId == userId)
-                                                                   .ToListAsync();
+            if (categoryId == null)
+            {
+                contacts = await _context.Contacts.Include(c => c.Categories)
+                                                  .Where(c => c.AppUserId == userId)
+                                                  .ToListAsync();
 
+            }
+            else
+            {
+                Category? category = new();
+                category = await _context.Categories.Include(c => c.Contacts)
+                                                    .FirstOrDefaultAsync(c => c.Id == categoryId && c.AppUserId == userId);
+                if(category != null)
+                {
+                    contacts = category.Contacts.ToList();
+
+                }
+
+            }
+
+
+            string? appUserId = _userManager.GetUserId(User);
+            ViewData["Categories"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View(contacts);
         }
 
@@ -360,6 +381,9 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
+
+            // Populates a list of cateories for the category filter
+            ViewData["Categories"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View(nameof(Index), contacts);
         }
 
