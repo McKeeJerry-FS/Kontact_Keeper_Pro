@@ -3,47 +3,37 @@
 @{
     ViewData["Title"] = "Categories";
 }
-<div class="card">
 
-    <div class="card-header">
+<p>
+    <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Categories">New Category<i class="bi bi-bookmark-plus-fill ps-2"></i></a>
+</p>
+<div class="p-3 border border-2 shadow-lg bg-light">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
 
-        <h1>Categories</h1>
-    </div>
-    <div class="card-body">
-
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
-        <table class="table">
-            <thead>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    @* <th>
-                    @Html.DisplayNameFor(model => model.AppUser)
-                    </th> *@
-                    <th></th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a class="me-3 editIcons" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-fill "></i></a>
+                        <a class="me-3 editIcons" asp-action="EmailCategory" asp-route-id="@item.Id"><i class="bi bi-envelope-fill "></i></a>
+                        <a class="me-3 editIcons" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash-fill text-danger "></i></a>
+
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        @* <td>
-                    @Html.DisplayFor(modelItem => item.AppUser.Id)
-                    </td> *@
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>
+

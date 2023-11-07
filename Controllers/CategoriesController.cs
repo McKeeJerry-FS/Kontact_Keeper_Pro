@@ -10,6 +10,7 @@ using Kontact_Keeper_Pro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Kontact_Keeper_Pro.Controllers
 {
@@ -19,12 +20,15 @@ namespace Kontact_Keeper_Pro.Controllers
         #region Properties
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailService;
 
         public CategoriesController(ApplicationDbContext context,
-                                    UserManager<AppUser> userManager)
+                                    UserManager<AppUser> userManager,
+                                    IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailSender;
         }
 
         #endregion
@@ -168,6 +172,76 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion
 
+        [HttpGet]
+        public async Task<IActionResult> EmailCategory(int? id, string? swalMessage)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //ViewData["SwalMessage"] = swalMessage;
+
+            string? userId = _userManager.GetUserId(User);
+            Category? category = await _context.Categories.Include(c => c.Contacts)
+                                                          .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<string?> emails = category.Contacts.Select(c => c.Email);
+            EmailData emailData = new()
+            {
+                GroupName = category.Name,
+                EmailAddress = string.Join(";", emails),
+                EmailSubject = $"Group Message: For {category.Name}! **** Eyes Only ****"
+            };
+            ViewData["EmailContacts"] = category.Contacts.ToList();
+            return View(emailData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmailCategory(EmailData emailData, int? id)
+        {
+            string? swalMessage = string.Empty;
+            if (ModelState.IsValid)
+            {
+                // SweetAlert
+                try
+                {
+                    string? email = emailData.EmailAddress;
+                    string? subject = emailData.EmailSubject;
+                    string? htmlMessage = emailData.EmailBody;
+
+                    // call email service
+                    await _emailService.SendEmailAsync(email!, subject!, htmlMessage!);
+                    swalMessage = "Success!! Email Sent!";
+
+
+
+
+                }
+                catch (Exception)
+                {
+                    swalMessage = "Error!!! Email Failed to send!";
+                    throw;
+                }
+            }
+            
+
+            string? userId = _userManager.GetUserId(User);
+            Category? category = await _context.Categories.Include(c => c.Contacts)
+                                                          .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
+
+            ViewData["EmailContacts"] = category.Contacts.ToList();
+
+            // testing
+            ViewData["SwalMessage"] = swalMessage;
+
+            return View(emailData);
+        }
 
         #region GET: Categories/Delete
         // GET: Categories/Delete/5
@@ -223,4 +297,4 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion    
     }
- }
+}

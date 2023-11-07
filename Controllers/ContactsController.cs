@@ -47,6 +47,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
             if (categoryId == null)
             {
+                // Normal Operation
                 contacts = await _context.Contacts.Include(c => c.Categories)
                                                   .Where(c => c.AppUserId == userId)
                                                   .ToListAsync();
@@ -54,6 +55,7 @@ namespace Kontact_Keeper_Pro.Controllers
             }
             else
             {
+                // Filtering by chosen category
                 Category? category = new();
                 category = await _context.Categories.Include(c => c.Contacts)
                                                     .FirstOrDefaultAsync(c => c.Id == categoryId && c.AppUserId == userId);
@@ -65,6 +67,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
             }
 
+            
 
             string? appUserId = _userManager.GetUserId(User);
             ViewData["Categories"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
@@ -269,7 +272,7 @@ namespace Kontact_Keeper_Pro.Controllers
                 FirstName = contact.FirstName,
                 LastName = contact.LastName,
             };
-
+           
             return View(emailData);
         }
 
@@ -355,6 +358,8 @@ namespace Kontact_Keeper_Pro.Controllers
         #region SearchContacts
         public async Task<IActionResult> SearchContacts(string? searchString)
         {
+            // Enables the search function by taking in a string and
+            // returning a list of contacts that include the string
             List<Contact> contacts = new();
 
             string? userId = _userManager.GetUserId(User);
