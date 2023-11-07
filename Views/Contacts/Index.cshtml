@@ -1,6 +1,6 @@
-﻿@using Kontact_Keeper_Pro.Services.Interfaces;
-@model IEnumerable<Kontact_Keeper_Pro.Models.Contact>
+﻿@model IEnumerable<Contact>
 @inject IImageService _ImageService
+
 @{
     ViewData["Title"] = "Contacts";
 }
@@ -11,27 +11,30 @@
 {
     <div class="row">
         <div class="col-12 text-end mb-2">
-            <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Contacts">Add<i class="bi bi-person-plus-fill ps-2"></i></a>
+            <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Contacts">Add New Contact<i class="bi bi-person-plus-fill ps-2"></i></a>
         </div>
     </div>
 }
 <div class="row g-2">
     <div class="col-12 col-md-4 sideNav">
+        @* serach function *@
         <form asp-action="SearchContacts" asp-controller="Contacts" method="post">
+                <label class="form-label fw-bold text-secondary">SEARCH CONTACTS</label>
             <div class="input-group">
                 <input class="form-control" type="search" name="searchString"
                        placeholder="Contact Name" />
-                <input type="submit" class="btn btn-outline-primary" value="Search" />
+                <input type="submit" class="btn btn-outline-primary text-secondary" value="Search" />
             </div>
         </form>
-        <form asp-action="" asp-controller="" method="post">
+        @* filtering function *@
+        <form asp-action="Index" asp-controller="Categories" method="post">
             <div class="mt-5">
-                <label class="form-label fw-bold">CATEGORY FILTER</label>
-@*                 <select name="categoryId" class="form-control" asp-items="@."
+                <label class="form-label fw-bold text-secondary">CATEGORY FILTER</label>
+                <select name="categoryId" class="form-control"
                         onchange="this.form.submit()" onfocus="this.selectedIndex=-1;this.blur();">                   
                         <option>All Contacts</option>
                 </select>
- *@            </div>
+            </div>
         </form>
     </div>
     <div class="col-12 col-md-8">
@@ -75,7 +78,7 @@
                                             @*Display Categories*@
                                             @foreach (Category category in contact.Categories)
                                             {
-                                                <span class="badge rounded-pill border border-1 text-dark fw-normal"></span>
+                                                <span class="badge rounded-pill border border-1 text-dark fw-normal">@category.Name</span>
                                             }
                                         </div>
                                     </div>
@@ -92,7 +95,7 @@
                     <div class="card mb-3">
                         <div class="row g-0">
                             <div class="col-md-4 square-img-container">
-                                <img src="" class="square-img rounded-start">
+                                <img src="@_ImageService.ConvertByteArrayToFile(null, null)" class="square-img rounded-start">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">

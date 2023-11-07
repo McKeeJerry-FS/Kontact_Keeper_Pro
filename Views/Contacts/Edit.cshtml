@@ -1,5 +1,6 @@
 ﻿@using Kontact_Keeper_Pro.Models.Enums
 @model Kontact_Keeper_Pro.Models.Contact
+@inject IImageService _ImageService
 
 @{
     ViewData["Title"] = "Edit";
@@ -23,7 +24,7 @@
         <div class="row g-3 p-2">
             <div class="col-12 col-lg-4">
                 <div class="square-img-container">
-                    <img id="contactImage" class="square-img" src="~/img/silo_img.jpg">
+                    <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model.ImageData, Model.ImageType)">
                 </div>
                 <div>
                     <input asp-for="ImageFile" class="form-control" accept=".png,.jpg,.jpeg,.gif" onchange="document.getElementById('contactImage').src= window.URL.createObjectURL(this.files[0])" />

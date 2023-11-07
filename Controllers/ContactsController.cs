@@ -24,7 +24,7 @@ namespace Kontact_Keeper_Pro.Controllers
         private readonly IImageService _imageService;
         private readonly IEmailSender _emailService;
 
-        public ContactsController(ApplicationDbContext context, 
+        public ContactsController(ApplicationDbContext context,
                                   UserManager<AppUser> userManager,
                                   IImageService imageService,
                                   IEmailSender emailSender)
@@ -43,7 +43,8 @@ namespace Kontact_Keeper_Pro.Controllers
         {
             string? userId = _userManager.GetUserId(User);
 
-            IEnumerable<Contact> contacts = await _context.Contacts.Include(c => c.Categories).Where(c => c.AppUserId == userId)
+            IEnumerable<Contact> contacts = await _context.Contacts.Include(c => c.Categories)
+                                                                   .Where(c => c.AppUserId == userId)
                                                                    .ToListAsync();
 
             return View(contacts);
@@ -268,7 +269,7 @@ namespace Kontact_Keeper_Pro.Controllers
                     await _emailService.SendEmailAsync(email!, subject!, htmlMessage!);
 
 
-                   
+
 
 
                 }
@@ -283,6 +284,7 @@ namespace Kontact_Keeper_Pro.Controllers
         }
 
         #endregion
+
         #region Contacts/Delete
         // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -325,6 +327,40 @@ namespace Kontact_Keeper_Pro.Controllers
         private bool ContactExists(int id)
         {
             return (_context.Contacts?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        #endregion
+
+        #region SearchContacts
+        public async Task<IActionResult> SearchContacts(string? searchString)
+        {
+            List<Contact> contacts = new();
+
+            string? userId = _userManager.GetUserId(User);
+
+            AppUser? appUser = await _context.Users.Include(u => u.Contacts)
+                                                    .ThenInclude(c => c.Categories)
+                                                   .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (appUser != null)
+            {
+                if (string.IsNullOrEmpty(searchString))
+                {
+                    contacts = appUser.Contacts.ToList();
+                }
+                else
+                {
+                    contacts = appUser.Contacts.Where(c => c.FullName!.ToLower().Contains(searchString.ToLower()))
+                                               .ToList();
+                }
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            return View(nameof(Index), contacts);
         }
 
         #endregion    
