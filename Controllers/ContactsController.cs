@@ -10,6 +10,7 @@ using Kontact_Keeper_Pro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Kontact_Keeper_Pro.Services.Interfaces;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Kontact_Keeper_Pro.Controllers
 {
@@ -21,14 +22,17 @@ namespace Kontact_Keeper_Pro.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         private readonly IImageService _imageService;
+        private readonly IEmailSender _emailService;
 
         public ContactsController(ApplicationDbContext context, 
                                   UserManager<AppUser> userManager,
-                                  IImageService imageService)
+                                  IImageService imageService,
+                                  IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
             _imageService = imageService;
+            _emailService = emailSender;
         }
         #endregion
 
@@ -220,6 +224,65 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion
 
+        #region EmailContact
+        [HttpGet]
+        public async Task<IActionResult> EmailContact(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            string? userId = _userManager?.GetUserId(User);
+            Contact? contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            EmailData emailData = new EmailData()
+            {
+                EmailAddress = contact.Email,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+            };
+
+            return View(emailData);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmailContact(EmailData emailData)
+        {
+            if (ModelState.IsValid)
+            {
+                // SweetAlert
+                try
+                {
+                    string? email = emailData.EmailAddress;
+                    string? subject = emailData.EmailSubject;
+                    string? htmlMessage = emailData.EmailBody;
+
+                    // call email service
+                    await _emailService.SendEmailAsync(email!, subject!, htmlMessage!);
+
+
+                   
+
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            // testing
+            return View(emailData);
+        }
+
+        #endregion
         #region Contacts/Delete
         // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
