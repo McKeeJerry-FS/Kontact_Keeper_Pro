@@ -23,7 +23,7 @@
 </div>
 <div class="p-2">
     <form asp-action="EmailCategory" asp-controller="Categories" method="post">
-
+        <input type="hidden" name="CategoryId" value="@ViewBag.CategoryId" />
         <div class="row row-cols-1 row-cols-md-2 g-3 mb-3">
             <div class="col col-md-12">
                 <label asp-for="EmailAddress" class="form-label">To:</label> @* Reference the EmailData's email address*@

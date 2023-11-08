@@ -43,6 +43,8 @@ namespace Kontact_Keeper_Pro.Controllers
         public async Task<IActionResult> Index(int? categoryId)
         {
             string? userId = _userManager.GetUserId(User);
+            int selectedFilter = 0;
+
             List<Contact> contacts = new();
 
             if (categoryId == null)
@@ -62,7 +64,7 @@ namespace Kontact_Keeper_Pro.Controllers
                 if(category != null)
                 {
                     contacts = category.Contacts.ToList();
-
+                    
                 }
 
             }
@@ -70,28 +72,28 @@ namespace Kontact_Keeper_Pro.Controllers
             
 
             string? appUserId = _userManager.GetUserId(User);
-            ViewData["Categories"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
+            ViewData["Categories"] = new SelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", selectedFilter);
             return View(contacts);
         }
 
         // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Contacts == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Contacts == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var contact = await _context.Contacts
-                .Include(c => c.Categories)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
+        //    var contact = await _context.Contacts
+        //        .Include(c => c.Categories)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (contact == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(contact);
-        }
+        //    return View(contact);
+        //}
         #endregion
 
         #region Contacts/Create
@@ -162,7 +164,8 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
-            Contact? contact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == id);
+            string? userId = _userManager.GetUserId(User);
+            Contact? contact = await _context.Contacts.Include(c => c.Categories).FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
             if (contact == null)
             {
                 return NotFound();
@@ -170,7 +173,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
             IEnumerable<int> currentCategories = contact.Categories.Select(c => c.Id);
 
-            string? userId = _userManager.GetUserId(User);
+            
 
             ViewData["CategoryList"] = new MultiSelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name", currentCategories);
             return View(contact);
@@ -187,6 +190,8 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 return NotFound();
             }
+
+            string? userId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
@@ -205,15 +210,16 @@ namespace Kontact_Keeper_Pro.Controllers
 
 
                     // Removing current categories
+                    
                     Contact? updatedContact = await _context.Contacts
                                                             .Include(c => c.Categories)
-                                                            .FirstOrDefaultAsync(c => c.Id == contact.Id);
+                                                            .FirstOrDefaultAsync(c => c.Id == contact.Id && c.AppUserId == userId);
+
+                    // Create a Service
 
                     updatedContact?.Categories.Clear();
                     _context.Update(updatedContact);
                     await _context.SaveChangesAsync();
-
-
 
                     // adding selected categories
                     foreach (int categoryId in selected)
@@ -241,7 +247,7 @@ namespace Kontact_Keeper_Pro.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            string? userId = _userManager.GetUserId(User);
+            
 
             ViewData["CategoryList"] = new MultiSelectList(_context.Categories.Where(c => c.AppUserId == userId), "Id", "Name");
             return View(contact);
@@ -320,9 +326,10 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
+            string? userId = _userManager.GetUserId(User);
+
             var contact = await _context.Contacts
-                .Include(c => c.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                        .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
             if (contact == null)
             {
                 return NotFound();
@@ -330,6 +337,8 @@ namespace Kontact_Keeper_Pro.Controllers
 
             return View(contact);
         }
+
+        // Add a SweetAlert for Delete Confirmation -- JMJ
 
         // POST: Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -340,7 +349,9 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Contacts'  is null.");
             }
-            var contact = await _context.Contacts.FindAsync(id);
+
+            string? userId = _userManager.GetUserId(User);
+            var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
             if (contact != null)
             {
                 _context.Contacts.Remove(contact);

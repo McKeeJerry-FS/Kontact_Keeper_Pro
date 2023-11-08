@@ -57,9 +57,10 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
+            string? userId = _userManager.GetUserId(User);
             var category = await _context.Categories
-                .Include(c => c.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                
+                .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
             if (category == null)
             {
                 return NotFound();
@@ -117,7 +118,8 @@ namespace Kontact_Keeper_Pro.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            string? userId = _userManager?.GetUserId(User);
+            var category = await _context.Categories.FirstOrDefaultAsync(c=>c.Id == id && c.AppUserId == userId);
             if (category == null)
             {
                 return NotFound();
@@ -172,6 +174,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion
 
+
         #region GET: EmailCategory
         [HttpGet]
         public async Task<IActionResult> EmailCategory(int? id, string? swalMessage)
@@ -205,6 +208,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion
 
+        
         #region POST: EmailCategory
         [HttpPost]
         public async Task<IActionResult> EmailCategory(EmailData emailData, int? id)
@@ -238,8 +242,8 @@ namespace Kontact_Keeper_Pro.Controllers
             string? userId = _userManager.GetUserId(User);
             Category? category = await _context.Categories.Include(c => c.Contacts)
                                                           .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
-
-            ViewData["EmailContacts"] = category.Contacts.ToList();
+            ViewData["CategoryId"] = category?.Id;
+            ViewData["EmailContacts"] = category?.Contacts.ToList();
 
             // testing
             ViewData["SwalMessage"] = swalMessage;
@@ -248,6 +252,8 @@ namespace Kontact_Keeper_Pro.Controllers
         }
 
         #endregion
+
+        
         #region GET: Categories/Delete
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -256,10 +262,9 @@ namespace Kontact_Keeper_Pro.Controllers
             {
                 return NotFound();
             }
-
+            string? userId = _userManager?.GetUserId(User);
             var category = await _context.Categories
-                .Include(c => c.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                                         .FirstOrDefaultAsync(c => c.Id == id && c.AppUserId == userId);
             if (category == null)
             {
                 return NotFound();
@@ -277,11 +282,13 @@ namespace Kontact_Keeper_Pro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            string? userId = _userManager.GetUserId(User);
+
             if (_context.Categories == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
             }
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories.FirstOrDefaultAsync(c=>c.Id == id && c.AppUserId == userId);
             if (category != null)
             {
                 _context.Categories.Remove(category);
