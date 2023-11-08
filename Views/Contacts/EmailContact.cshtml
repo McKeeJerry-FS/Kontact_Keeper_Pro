@@ -51,4 +51,29 @@
                 window.editor = editor;
             });
     </script>
+
+    <!-- Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        let message = '@(ViewBag.SwalMessage)';
+
+        if (!message.includes("Error") && message != null) {
+            Swal.fire({
+                backdrop: false,
+                icon: 'success',
+                title: message,
+                showConfirmButton: true
+            });
+        }
+        else if (message.includes("Error")) {
+            Swal.fire({
+                backdrop: false,
+                icon: 'success',
+                title: 'Oops...',
+                text: message
+            });
+        }
+
+    </script>
 }

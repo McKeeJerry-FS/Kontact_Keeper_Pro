@@ -253,6 +253,7 @@ namespace Kontact_Keeper_Pro.Controllers
         [HttpGet]
         public async Task<IActionResult> EmailContact(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -280,6 +281,7 @@ namespace Kontact_Keeper_Pro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EmailContact(EmailData emailData)
         {
+            string? swalMessage = string.Empty;
             if (ModelState.IsValid)
             {
                 // SweetAlert
@@ -291,7 +293,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
                     // call email service
                     await _emailService.SendEmailAsync(email!, subject!, htmlMessage!);
-
+                    swalMessage = "Success!! Email Sent!";
 
 
 
@@ -299,7 +301,7 @@ namespace Kontact_Keeper_Pro.Controllers
                 }
                 catch (Exception)
                 {
-
+                    swalMessage = "Error!!! Email Failed to send!";
                     throw;
                 }
             }

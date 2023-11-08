@@ -172,6 +172,7 @@ namespace Kontact_Keeper_Pro.Controllers
 
         #endregion
 
+        #region GET: EmailCategory
         [HttpGet]
         public async Task<IActionResult> EmailCategory(int? id, string? swalMessage)
         {
@@ -202,6 +203,9 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(emailData);
         }
 
+        #endregion
+
+        #region POST: EmailCategory
         [HttpPost]
         public async Task<IActionResult> EmailCategory(EmailData emailData, int? id)
         {
@@ -229,7 +233,7 @@ namespace Kontact_Keeper_Pro.Controllers
                     throw;
                 }
             }
-            
+
 
             string? userId = _userManager.GetUserId(User);
             Category? category = await _context.Categories.Include(c => c.Contacts)
@@ -243,6 +247,7 @@ namespace Kontact_Keeper_Pro.Controllers
             return View(emailData);
         }
 
+        #endregion
         #region GET: Categories/Delete
         // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
