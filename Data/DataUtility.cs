@@ -1,4 +1,7 @@
-﻿using Npgsql;
+﻿using Kontact_Keeper_Pro.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Kontact_Keeper_Pro.Data
 {
@@ -28,6 +31,16 @@ namespace Kontact_Keeper_Pro.Data
                 TrustServerCertificate = true
             };
             return builder.ToString();
+        }
+
+        public static async Task ManageDataAsync(IServiceProvider svcProvider)
+        {
+            var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
+            var userManagerSvc = svcProvider.GetRequiredService<UserManager<AppUser>>();
+            var configurationSvc = svcProvider.GetRequiredService<IConfiguration>();
+
+            // Alight the database by checking the migrations
+            await dbContextSvc.Database.MigrateAsync();
         }
     }
 }
