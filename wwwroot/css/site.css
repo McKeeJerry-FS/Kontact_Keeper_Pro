@@ -29,6 +29,11 @@ body { /* fallback for old browsers */
     font-weight: 400;
     font-size: 1.2rem;
 }
+
+.container {
+    background-color: var(--jm-gray-300)
+}
+
 /*--Button Overrides --*/ /*-- Button styles override Bootstrap Styles --*/
 
 .btn-outline-primary {
@@ -74,10 +79,19 @@ main {
     background-color: var(--cf-primaryColorLight);
 }
 
+#createCard {
+    background-color: var(--cf-light-gray);
+}
+
+#editCard {
+    background-color: var(--cf-light-gray);
+}
+
 .content {
     flex: 1 0 auto;
     padding-top: 7.5rem;
     padding-bottom: 2.5rem;
+   
 }
 
 .heroCard {

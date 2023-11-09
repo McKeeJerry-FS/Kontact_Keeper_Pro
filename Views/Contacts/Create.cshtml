@@ -12,16 +12,16 @@
 
 <h4>Contact Information</h4>
 
-<div class="p-3 border border-3 shadow-lg bg-secondary rounded-4">
+<div class="p-3 border border-3 shadow-lg rounded-4" id="createCard">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row g-3 p-2">
             <div class="col-12 col-lg-4">
-                <div class="square-img-container">
+                <div class="square-img-container border border-1 border-secondary">
                     <img id="contactImage" class="square-img" src="@_ImageService.ConvertByteArrayToFile(Model?.ImageData, Model?.ImageType)">
                 </div>
                 <div>
-                    <input asp-for="ImageFile" class="form-control" accept=".png,.jpg,.jpeg,.gif" onchange="document.getElementById('contactImage').src= window.URL.createObjectURL(this.files[0])" />
+                    <input asp-for="ImageFile" class="form-control border border-1 border-secondary" accept=".png,.jpg,.jpeg,.gif" onchange="document.getElementById('contactImage').src= window.URL.createObjectURL(this.files[0])" />
                     <span asp-validation-for="ImageFile" class="text-danger"></span>
                 </div>
             </div>
@@ -29,58 +29,58 @@
                 <div class="row">
                     <div class="col-12 col-lg-6">
                         <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
+                        <input asp-for="FirstName" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-6">
                         <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
+                        <input asp-for="LastName" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-6 mt-2">
                         <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-6 mt-2">
                         <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
+                        <input asp-for="PhoneNumber" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="col-12 mt-2">
                         <label asp-for="Address1" class="control-label"></label>
-                        <input asp-for="Address1" class="form-control" />
+                        <input asp-for="Address1" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="Address1" class="text-danger"></span>
                     </div>
                     <div class="col-12 mt-2">
                         <label asp-for="Address2" class="control-label"></label>
-                        <input asp-for="Address2" class="form-control" />
+                        <input asp-for="Address2" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="Address2" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-6 mt-2">
                         <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" class="form-control" />
+                        <input asp-for="City" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-4 mt-2">
                         <label asp-for="State" class="control-label"></label>
-                        <select asp-for="State" class="form-select" asp-items="@Html.GetEnumSelectList<States>()">
+                        <select asp-for="State" class="form-select border border-1 border-secondary" asp-items="@Html.GetEnumSelectList<States>()">
                             <option></option>
                         </select>
                         <span asp-validation-for="State" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-2 mt-2">
                         <label asp-for="ZipCode" class="control-label"></label>
-                        <input asp-for="ZipCode" class="form-control" />
+                        <input asp-for="ZipCode" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="ZipCode" class="text-danger"></span>
                     </div>
                     <div class="col-12 col-lg-6 mt-3">
                         <label asp-for="Categories" class="control-label"></label>
-                        <select name="Selected" class="form-control" asp-items="ViewBag.CategoryList" multiple></select>
+                        <select name="Selected" class="form-control border border-1 border-secondary" asp-items="ViewBag.CategoryList" multiple></select>
                     </div>
                     <div class="col-12 col-lg-6 mt-3">
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input asp-for="DateOfBirth" class="form-control" />
+                        <input asp-for="DateOfBirth" class="form-control border border-1 border-secondary" />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                 </div>

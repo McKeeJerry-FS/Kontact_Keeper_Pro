@@ -28,7 +28,7 @@
 {
     <div class="row">
         <div class="col-12 text-end mb-2">
-            <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Contacts">Add New Contact<i class="bi bi-person-plus-fill ps-2"></i></a>
+            <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Contacts">Add New Contact<i class="bi bi-person-plus-fill ps-2 mb-2"></i></a>
         </div>
     </div>
 }
@@ -96,7 +96,7 @@
                                             @*Display Categories*@
                                             @foreach (Category category in contact.Categories)
                                             {
-                                                <span class="badge rounded-pill border border-1 text-dark fw-normal">@category.Name</span>
+                                                <span class="badge rounded-pill border border-1 bg-primary text-light fw-normal">@category.Name</span>
                                             }
                                         </div>
                                     </div>
