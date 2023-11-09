@@ -25,6 +25,8 @@ builder.Services.AddScoped<IImageService, ImageService>();
 
 // Email Service Here
 builder.Services.AddScoped<IEmailSender, EmailService>();
+
+builder.Services.AddScoped<IKontactKeeperProService, KontactKeeperProService>();
 // Email Configurations
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
