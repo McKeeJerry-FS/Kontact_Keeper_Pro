@@ -1,4 +1,4 @@
-[![Deployed on Railway]https://kontactkeeperpro-production.up.railway.app/Contacts)]
+[![Deployed on Railway](https://railway.app/button.svg)]https://kontactkeeperpro-production.up.railway.app/Contacts)]
 
 # Kontact_Keeper_Pro
 
