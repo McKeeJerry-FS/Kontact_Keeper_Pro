@@ -33,14 +33,51 @@ namespace Kontact_Keeper_Pro.Data
             return builder.ToString();
         }
 
+        // Demo User Seed Method
+        private static async Task SeedDemoUsersAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+        {
+            string? demoLoginEmail = configuration["DemoLoginEmail"] ?? Environment.GetEnvironmentVariable("DemoLoginEmail");
+            string? demoLoginPassword = configuration["DemoLoginPassword"] ?? Environment.GetEnvironmentVariable("DemoLoginPassword");
+
+            AppUser demoUser = new()
+            {
+                UserName = demoLoginEmail,
+                Email = demoLoginEmail,
+                FirstName = "Demo",
+                LastName = "User",
+                EmailConfirmed = true
+            };
+
+            try
+            {
+                AppUser? appUser = await userManager.FindByEmailAsync(demoLoginEmail!);
+                if (appUser == null)
+                {
+                    await userManager.CreateAsync(demoUser, demoLoginPassword!);
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("************* ERROR ****************");
+                Console.WriteLine("Error seeding Demo Login User.");
+                Console.WriteLine($"Error: {exception}");
+                Console.WriteLine("************* ERROR ****************");
+
+                throw;
+            }
+        }
+
         public static async Task ManageDataAsync(IServiceProvider svcProvider)
         {
             var dbContextSvc = svcProvider.GetRequiredService<ApplicationDbContext>();
             var userManagerSvc = svcProvider.GetRequiredService<UserManager<AppUser>>();
             var configurationSvc = svcProvider.GetRequiredService<IConfiguration>();
 
-            // Alight the database by checking the migrations
+            // Align the database by checking the migrations
             await dbContextSvc.Database.MigrateAsync();
+
+            // Seed Demo User
+            await SeedDemoUsersAsync(userManagerSvc, configurationSvc);
         }
     }
 }

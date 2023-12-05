@@ -44,7 +44,7 @@ namespace Kontact_Keeper_Pro.Services
 
 				// send the email
 
-				using SmtpClient smtpClient = new SmtpClient();
+				using SmtpClient smtpClient = new();
 				try
 				{
                     await smtpClient.ConnectAsync(emailHost, emailPort, SecureSocketOptions.StartTls);
